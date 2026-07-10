@@ -1,6 +1,11 @@
-def main():
-    print("Hello from routeflowai!")
+"""
+starting the fastAPI app.
+"""
+from fastapi import FastAPI
 
+app = FastAPI()
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def hello_world():
+    return {"message": "Hello World"}
+
