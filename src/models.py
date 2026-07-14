@@ -4,12 +4,12 @@ This module serves the schemas used within API interaction/communication
 from pydantic import BaseModel, ConfigDict, Field
 
 # General Address class
-class Address(BaseModel):
-    street_name: str = Field(examples=["Musterstr."])
-    house_number: str = Field(5, gt=0, le=5, examples=["12"])
-    city: str = Field(examples=["Musterstadt"])
-    state: str = Field(examples=["Musterland"])
-    zip_code: str = Field(examples=["10969"])
+# class Address(BaseModel):
+#     street_name: str = Field(examples=["Musterstr."])
+#     house_number: str = Field(5, gt=0, le=5, examples=["12"])
+#     city: str = Field(examples=["Musterstadt"])
+#     state: str = Field(examples=["Musterland"])
+#     zip_code: str = Field(examples=["10969"])
 
 # For data coming IN (POST requests)
 class UserCreate(BaseModel):
