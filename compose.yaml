@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Banane1988
+      POSTGRES_DB: RouteFlowAI-postgres
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
