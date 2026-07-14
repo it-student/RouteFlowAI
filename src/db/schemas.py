@@ -9,13 +9,13 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String)
+    name = Column(String, nullable=True)
     family_name = Column(String, nullable=False)
     address = Column(String, nullable=False)
-    gps_coordinates = Column(String)
+    gps_coordinates = Column(String, nullable=True)
 
     def __repr__(self):
-        return f"User(Vorname: {self.vorname}, Nachname: {self.nachname}, Adresse: {self.adresse}, GPS: {self.gps})"
+        return f"User(Vorname: {self.name}, Nachname: {self.family_name}, Adresse: {self.address}, GPS: {self.gps_coordinates})"
 
 class Searchhistory(Base):
     __tablename__ = 'searchhistories'
@@ -55,3 +55,4 @@ class Tripplans(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
+    suggestion_id = Column(Integer, ForeignKey('suggestions.id'))
