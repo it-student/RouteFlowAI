@@ -15,14 +15,15 @@ class User(Base):
     gps_coordinates = Column(String, nullable=True)
 
     def __repr__(self):
-        return f"User(Vorname: {self.name}, Nachname: {self.family_name}, Adresse: {self.address}, GPS: {self.gps_coordinates})"
+        return f"User(Vorname: {self.name}, Nachname: {self.family_name}, \
+Adresse: {self.address}, GPS: {self.gps_coordinates})"
 
 class Searchhistory(Base):
     __tablename__ = 'searchhistories'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     distance = Column(Float)
-    traveltime = Column(Integer) # Time in seconds or milliseconds
+    traveltime = Column(Integer) # Time in minutes or seconds or milliseconds
     theme = Column(String)
     transport_type = Column(String)
     group_size = Column(Integer)
