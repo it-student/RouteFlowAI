@@ -77,19 +77,15 @@ async def create_user(db: db_dependency,
 
 @router.put("/users/{user_id}", response_model=models.UserResponse)
 async def update_user(db: db_dependency,
-                      user_id: int = Path(
+                      user_id: Annotated[int,Path(
                           description="The unique ID of the user",
                           examples=[40451]
-                      ),
+                      )],
 
-                      user: models.UserCreate = Body(
-                          description="UserCreate object",
-                          examples=[
-                              {"name": "Max",
-                               "family_name": "Mustermann",
-                               "address": "Musterstr. 12, 12345 Musterstadt",
-                               "gps_coordinates": ""}
-                          ])):
+                      user: Annotated[models.UserCreate, Body(
+                          description="UserCreate object"
+                      )]
+    ):
     """
     - update a user, finding it by its ID.
     - :param user_id: unique id of the user (int)

@@ -20,6 +20,19 @@ class UserCreate(BaseModel):
     address: str = Field(examples=["Musterstr. 12, 12345 Musterstadt"])
     gps_coordinates: str | None = Field(examples=[""])
 
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "name": "Max",
+                    "family_name": "Mustermann",
+                    "address": "Musterstr. 12, 12345 Musterstadt",
+                    "gps_coordinates": ""
+                }
+            ]
+        }
+    }
+
 # For data going OUT (Responses)
 class UserResponse(BaseModel):
     id: int
