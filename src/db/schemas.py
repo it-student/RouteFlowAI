@@ -1,7 +1,7 @@
 """
 All classes inheriting from Base class mapping the tables inside the database.
 """
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from db.db_operations import Base
 
 
@@ -15,14 +15,15 @@ class User(Base):
     gps_coordinates = Column(String, nullable=True)
 
     def __repr__(self):
-        return f"User(Vorname: {self.name}, Nachname: {self.family_name}, Adresse: {self.address}, GPS: {self.gps_coordinates})"
+        return f"User(Vorname: {self.name}, Nachname: {self.family_name}, \
+Adresse: {self.address}, GPS: {self.gps_coordinates})"
 
 class Searchhistory(Base):
     __tablename__ = 'searchhistories'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     distance = Column(Float)
-    traveltime = Column(Integer) # Time in seconds or milliseconds
+    traveltime = Column(Integer) # Time in minutes or seconds or milliseconds
     theme = Column(String)
     transport_type = Column(String)
     group_size = Column(Integer)
@@ -34,7 +35,7 @@ class Searchhistory(Base):
                 f"user_id: {self.user_id}")
 
 
-class Suggestions(Base):
+class Suggestion(Base):
     __tablename__ = 'suggestions'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -50,9 +51,14 @@ class Suggestions(Base):
         return f"Suggestions(Title: {self.title}, Destination: {self.destination_coordinates}"
 
 
-class Tripplans(Base):
+class Tripplan(Base):
     __tablename__ = 'tripplans'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    stopps = Column(Integer)
     suggestion_id = Column(Integer, ForeignKey('suggestions.id'))
+    search_id = Column(Integer, ForeignKey('searchhistories.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
