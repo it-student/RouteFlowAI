@@ -1,7 +1,7 @@
 """
 All classes inheriting from Base class mapping the tables inside the database.
 """
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from db.db_operations import Base
 
 
@@ -35,7 +35,7 @@ class Searchhistory(Base):
                 f"user_id: {self.user_id}")
 
 
-class Suggestions(Base):
+class Suggestion(Base):
     __tablename__ = 'suggestions'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -51,9 +51,14 @@ class Suggestions(Base):
         return f"Suggestions(Title: {self.title}, Destination: {self.destination_coordinates}"
 
 
-class Tripplans(Base):
+class Tripplan(Base):
     __tablename__ = 'tripplans'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    stopps = Column(Integer)
     suggestion_id = Column(Integer, ForeignKey('suggestions.id'))
+    search_id = Column(Integer, ForeignKey('searchhistories.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
