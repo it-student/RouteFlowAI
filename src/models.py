@@ -2,6 +2,7 @@
 This module serves the schemas used within API interaction/communication
 """
 from datetime import datetime
+from typing import List
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -40,6 +41,7 @@ class UserResponse(BaseModel):
     id: int
     name: str | None
     family_name: str
+    address: str
 
     # Getting SQLAlchemy database object, read attributes directly
     model_config = ConfigDict(from_attributes=True)
@@ -49,6 +51,7 @@ class UserResponse(BaseModel):
 
 # For data coming in (POST, PUT requests)
 class SearchCreate(BaseModel):
+    starting_point: str = Field(examples=["Musterstarsse 1, 12345 Musterstadt"])
     distance: float | int = Field(examples=[80.0]) # in km
     traveltime: int = Field(examples=[100]) # in Minutes (?)
     theme: str = Field(examples=["Bekannte Orte", "Noch nicht besuchte Orte"])
@@ -59,6 +62,7 @@ class SearchCreate(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
+                    "starting_point": "Musterstarsse 1, 12345 Musterstadt",
                     "distance": 80.0,
                     "traveltime": 100,
                     "theme": "Neue Orte entdecken",
@@ -72,6 +76,7 @@ class SearchCreate(BaseModel):
 # For data going out (Response)
 class SearchResponse(BaseModel):
     id: int = Field(examples=[5], ge=1)
+    starting_point: str | None = Field(examples=["Musterstarsse 1, 12345 Musterstadt"])
     distance: float = Field(examples=[80.0])
     traveltime: int = Field(examples=[100])  # in Minutes
     theme: str = Field(examples=["Bekannte Orte", "Noch nicht besuchte Orte"])
@@ -113,6 +118,9 @@ class SuggestionCreate(BaseModel):
             ]
         }
     }
+
+class SuggestionList(BaseModel):
+    suggestions: List[SuggestionCreate]
 
 # For data going out (Responses)
 class SuggestionResponse(BaseModel):

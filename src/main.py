@@ -1,8 +1,6 @@
 """
 starting the fastAPI app.
 """
-from typing import Annotated, List
-
 from fastapi import FastAPI
 from db.db_operations import engine
 import db.schemas as models

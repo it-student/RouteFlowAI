@@ -22,6 +22,7 @@ class Searchhistory(Base):
     __tablename__ = 'searchhistories'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    starting_point = Column(String)
     distance = Column(Float)
     traveltime = Column(Integer) # Time in minutes or seconds or milliseconds
     theme = Column(String)

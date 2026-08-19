@@ -8,6 +8,7 @@ from db.db_operations import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, status
 
+from pipeline import ai_pipeline
 
 router = APIRouter()
 
@@ -139,12 +140,17 @@ async def new_search_by_user(db: db_dependency,
     - :param search: SearchCreate object
     - :return db_search: SearchResponse object:
     """
-    search = schemas.Searchhistory(distance=search.distance,
+
+    search = schemas.Searchhistory(starting_point=search.starting_point,
+                                 distance=float(search.distance),
                                  traveltime=search.traveltime,
                                  theme=search.theme,
                                  transport_type=search.transport_type,
                                  group_size=search.group_size,
                                  user_id=user_id)
+
+    suggestions = ai_pipeline.recommendations_flow(search)
+
     db.add(search)
     db.commit()
     return search
