@@ -8,7 +8,7 @@ from db.db_operations import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, status
 
-from pipeline import ai_pipeline
+from pipeline import ai_functions
 
 router = APIRouter()
 
@@ -149,7 +149,7 @@ async def new_search_by_user(db: db_dependency,
                                  group_size=search.group_size,
                                  user_id=user_id)
 
-    suggestions = ai_pipeline.recommendations_flow(search)
+    suggestions = ai_functions.recommendations_flow(search)
 
     db.add(search)
     db.commit()
