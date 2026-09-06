@@ -2,7 +2,6 @@
 This module serves the schemas used within API interaction/communication
 """
 from datetime import datetime
-from typing import List
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -94,7 +93,6 @@ class SearchResponse(BaseModel):
 class SuggestionCreate(BaseModel):
     title: str = Field(examples=["Trip to new lands"])
     description: str = Field(examples=["A Trip to unknown territory, for an adventurous day!"])
-    est_trip_costs: float = Field(examples=[80.0]) # Gas, Ticket costs without meal expenses in EUR!
     sug_transport_type: str = Field(examples=["Motorcycle", "public transport", "Bicycle"])
     destination_coordinates: str | None = Field(examples=[""])
 
@@ -104,14 +102,12 @@ class SuggestionCreate(BaseModel):
                 {
                     "description": "A Trip to unknown territory, for an adventurous day!",
                     "destination_coordinates": "",
-                    "est_trip_costs": 40,
                     "sug_transport_type": "Motorcycle",
                     "title": "Trip to new lands"
                 },
                 {
                     "description": "A Trip mixed with known and unknown grounds!",
                     "destination_coordinates": "",
-                    "est_trip_costs": 50,
                     "sug_transport_type": "Motorcycle",
                     "title": "A mix of both"
                 },
@@ -120,14 +116,13 @@ class SuggestionCreate(BaseModel):
     }
 
 class SuggestionList(BaseModel):
-    suggestions: List[SuggestionCreate]
+    suggestions: list[SuggestionCreate]
 
 # For data going out (Responses)
 class SuggestionResponse(BaseModel):
     id: int = Field(examples=[5], ge=1)
     title: str = Field(examples=["Trip to new lands"])
     description: str = Field(examples=["A Trip to unknown territory, for an adventurous day!"])
-    est_trip_costs: float = Field(examples=[80.0])  # Gas, Ticket costs without meal expenses in EUR!
     sug_transport_type: str = Field(examples=["Motorcycle", "public transport", "Bicycle"])
     destination_coordinates: str | None = Field(examples=[""])
     user_id: int = Field(examples=[5], ge=1)
