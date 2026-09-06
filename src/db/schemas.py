@@ -42,14 +42,14 @@ class Suggestion(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
     description = Column(String)
-    est_trip_costs = Column(Float)
     sug_transport_type = Column(String)
     destination_coordinates = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
     history_id = Column(Integer, ForeignKey('searchhistories.id'))
 
     def __repr__(self):
-        return f"Suggestions(Title: {self.title}, Destination: {self.destination_coordinates}"
+        return (f"Suggestions(Title: {self.title}, Description: {self.description}, \n"
+                f"Destination: {self.destination_coordinates}, Transport type: {self.sug_transport_type}, \n")
 
 
 class Tripplan(Base):
