@@ -137,8 +137,10 @@ class SuggestionResponse(BaseModel):
 # For data coming in (POST, PUT request)
 class TripplanCreate(BaseModel):
     title: str = Field(examples=["Trip to new lands"])
-    start_time: datetime = Field(examples=[datetime(1900, 1, 1), datetime(2000, 1, 1)])
-    end_time: datetime = Field(examples=[datetime(1900, 1, 1), datetime(2000, 1, 1)])
+    description: str = Field(examples=["A local route through Grunewald forest passing Schlachtensee, Krumme Lanke, and Großer Wannsee, returning via Potsdam-Babelsberg."])
+    highlights: str = Field(examples=["Great Lakeside views along the road, passing by film historic Babelsberg, diverse and varying lunch spots along the way."])
+    route_description: str = Field(examples=["Starting from Southwest of Berlin, take the Teltower Damm to the north, etc."])
+    google_maps_location_links: str = Field(examples=["https://maps.app.goo.gl/zMp3HXneUkC1kjmC6"])
     stopps: int  = Field(default=1, examples=[5], ge=1)
 
     model_config = {
@@ -146,9 +148,11 @@ class TripplanCreate(BaseModel):
             "examples": [
                 {
                     "title": "Trip to new lands",
-                    "start_time": datetime(2026, 7, 17, 10, 15),
-                    "end_time": datetime(2026, 7, 17, 19, 30),
-                    "stopps": 5,
+                    "description": "A local route through Grunewald forest passing Schlachtensee, Krumme Lanke, and Großer Wannsee, returning via Potsdam-Babelsberg.",
+                    "highlights": "Great Lakeside views along the road, passing by film historic Babelsberg, diverse and varying lunch spots along the way.",
+                    "route_description": "Starting from Southwest of Berlin, take the Teltower Damm to the north, etc.",
+                    "google_maps_location_links": "https://maps.app.goo.gl/zMp3HXneUkC1kjmC6",
+                    "stopps": 5
                 }
             ]
         }
@@ -157,8 +161,14 @@ class TripplanCreate(BaseModel):
 # For data going out (Response)
 class TripplanResponse(BaseModel):
     id: int = Field(examples=[5], ge=1)
-    start_time: datetime = Field(examples=[datetime(1900, 1, 1), datetime(2000, 1, 1)])
-    end_time: datetime = Field(examples=[datetime(1900, 1, 1), datetime(2000, 1, 1)])
+    title: str = Field(examples=["Trip to new lands"])
+    description: str = Field(examples=[
+        "A local route through Grunewald forest passing Schlachtensee, Krumme Lanke, and Großer Wannsee, returning via Potsdam-Babelsberg."])
+    highlights: str = Field(examples=[
+        "Great Lakeside views along the road, passing by film historic Babelsberg, diverse and varying lunch spots along the way."])
+    route_description: str = Field(
+        examples=["Starting from Southwest of Berlin, take the Teltower Damm to the north, etc."])
+    google_maps_location_links: str = Field(examples=["https://maps.app.goo.gl/zMp3HXneUkC1kjmC6"])
     stopps: int = Field(default=1, examples=[5], ge=1)
     suggestion_id: int = Field(examples=[5], ge=1)
     search_id: int = Field(examples=[5], ge=1)
