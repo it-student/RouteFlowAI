@@ -11,4 +11,5 @@ def schedule_flow(user_id: int, suggestion_id: int):
     :return: TripplanCreate object
     calls get_suggestion() to get suggestion details.
     """
-    return get_suggestion(user_id=user_id, suggest_id=suggestion_id)
+    base_suggestion = get_suggestion(user_id=user_id, suggest_id=suggestion_id)
+    return base_suggestion
