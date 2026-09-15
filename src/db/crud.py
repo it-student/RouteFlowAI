@@ -5,7 +5,7 @@ from idlelib import history
 
 from db.db_operations import SessionLocal
 from db.schemas import User, Suggestion
-from models import SuggestionList, SuggestionCreate
+from models import SuggestionList, SuggestionResponse
 
 
 def get_user_address(user_id) -> str:
@@ -47,3 +47,19 @@ def save_recommendations(user_id: int, search_id: int, suggestion_list: Suggesti
         else:
             # Raise exceptioon here:
             print("No suggestions saved")
+
+
+def get_suggestion(user_id: int, suggest_id: int) -> SuggestionResponse:
+    """
+    returns the suggestion saved to the database.
+    :param user_id:
+    :param suggest_id:
+    :return: Suggestion object:
+    """
+    with SessionLocal() as db:
+        suggestion = db.query(Suggestion).filter(Suggestion.id == suggest_id).first()
+        if suggestion.user_id == user_id:
+            return SuggestionResponse.model_validate(suggestion)
+        else:
+            print("Suggestion not found for user with id: {}".format(user_id))
+            return object.__new__(SuggestionResponse)
