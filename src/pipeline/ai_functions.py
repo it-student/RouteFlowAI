@@ -80,3 +80,11 @@ def structure_output(unstructured_results: str) -> models.SuggestionList:
     )
     suggestions = models.SuggestionList.model_validate_json(interaction.output_text)
     return suggestions
+
+
+def schedule_trip():
+    """
+    Schedule a trip according to chosen suggestion.
+    :return: unstructured_schedule_results
+    """
+    pass
