@@ -8,7 +8,7 @@ from db.db_operations import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, status
 
-from pipeline import ai_functions, create_recommendations
+from pipeline import create_recommendations, prepare_trip
 
 router = APIRouter()
 
@@ -291,7 +291,6 @@ async def create_suggestions(db: db_dependency,
         db_suggestion = schemas.Suggestion(
             title=suggestion.title,
             description=suggestion.description,
-            est_trip_costs=suggestion.est_trip_costs,
             sug_transport_type=suggestion.sug_transport_type,
             destination_coordinates=suggestion.destination_coordinates if suggestion.destination_coordinates else '',
             user_id=user_id,
@@ -421,24 +420,17 @@ async def delete_suggestion(db: db_dependency,
 # ///////////////// End of Suggestions routes ///////////////// #
 # ///////////////// Tripplan specific C.R.U.D. routes ///////////////// #
 
-@router.post("/users/{user_id}/{search_id}/{suggestion_id}/tripplan",
-             response_model=models.TripplanResponse,
+@router.post("/users/{user_id}/{suggestion_id}/tripplan",
+             # response_model=models.TripplanResponse,
              status_code=status.HTTP_201_CREATED)
 async def create_tripplan(db: db_dependency,
                           user_id: Annotated[int,Path(
                               description="The unique ID of the user",
                               examples=[40451]
                           )],
-                          search_id: Annotated[int, Path(
-                              description="The unique ID of the search",
-                              examples=[40451]
-                          )],
                           suggestion_id: Annotated[int, Path(
                               description="The unique ID of the suggestion",
                               examples=[40451]
-                          )],
-                          tripplan: Annotated[models.TripplanCreate, Body(
-                              description="TripplanCreate object."
                           )]
     ):
     """
@@ -450,19 +442,24 @@ async def create_tripplan(db: db_dependency,
     - :param tripplan: A TripplanCreate object.
     - :return tripplan: TripplanResponse object:
     """
-    db_tripplan = schemas.Tripplan(
-        title=tripplan.title,
-        start_time=tripplan.start_time,
-        end_time=tripplan.end_time,
-        stopps=tripplan.stopps,
-        suggestion_id=suggestion_id,
-        search_id=search_id,
-        user_id=user_id
-    )
-    db.add(db_tripplan)
-    db.commit()
+    tripplan = prepare_trip.schedule_flow(user_id=user_id, suggestion_id=suggestion_id)
+    print(tripplan)
+    # db_tripplan = schemas.Tripplan(
+    #     title=tripplan.title,
+    #     description=tripplan.description,
+    #     highlights=tripplan.highlights,
+    #     route_description=tripplan.route_description,
+    #     google_maps_location_links=tripplan.google_maps_location_links,
+    #     stopps=tripplan.stopps,
+    #     suggestion_id=suggestion_id,
+    #     search_id=search_id,
+    #     user_id=user_id
+    # )
+    # db.add(db_tripplan)
+    # db.commit()
 
-    return db_tripplan
+    # return db_tripplan
+    return tripplan
 
 @router.get("/users/{user_id}/tripplans", response_model=List[models.TripplanResponse])
 async def get_tripplans(db: db_dependency,
