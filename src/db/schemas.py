@@ -1,7 +1,7 @@
 """
 All classes inheriting from Base class mapping the tables inside the database.
 """
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from db.db_operations import Base
 
 
@@ -33,7 +33,7 @@ class Searchhistory(Base):
     def __repr__(self):
         return (f"Searchhistory(Distance: {self.distance}, traveltime: {self.traveltime}), \""
                 f"theme: {self.theme}, transport_type: {self.transport_type}, group_size: {self.group_size} \""
-                f"user_id: {self.user_id}")
+                f"user_id: {self.user_id})")
 
 
 class Suggestion(Base):
@@ -49,7 +49,7 @@ class Suggestion(Base):
 
     def __repr__(self):
         return (f"Suggestions(Title: {self.title}, Description: {self.description}, \n"
-                f"Destination: {self.destination_coordinates}, Transport type: {self.sug_transport_type}, \n")
+                f"Destination: {self.destination_coordinates}, Transport type: {self.sug_transport_type}) \n")
 
 
 class Tripplan(Base):
@@ -57,8 +57,10 @@ class Tripplan(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
-    start_time = Column(DateTime)
-    end_time = Column(DateTime)
+    description = Column(String)
+    highlights = Column(String)
+    route_description = Column(String)
+    google_maps_location_links = Column(String)
     stopps = Column(Integer)
     suggestion_id = Column(Integer, ForeignKey('suggestions.id'))
     search_id = Column(Integer, ForeignKey('searchhistories.id'))
