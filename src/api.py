@@ -23,6 +23,7 @@ def get_db():
     finally:
         db.close()
 
+# creating dependency to use within routes methods
 db_dependency = Annotated[Session, Depends(get_db)]
 
 # ///////////////// Users specific C.R.U.D. routes ///////////////// #
@@ -216,7 +217,7 @@ async def update_search(db: db_dependency,
     - :param search: SearchCreate object:
     - :return search: SearchResponse object:
     """
-    db_search =  db.get(schemas.Searchhistory, search_id)
+    db_search = db.get(schemas.Searchhistory, search_id)
     if not db_search or db_search.user_id != user_id:
         raise HTTPException(
             status_code=404,

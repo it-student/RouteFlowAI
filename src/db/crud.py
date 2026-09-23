@@ -4,8 +4,8 @@ This module is for crdu functionality outside routes.
 from idlelib import history
 
 from db.db_operations import SessionLocal
-from db.schemas import User, Suggestion
-from models import SuggestionList, SuggestionResponse
+from db.schemas import User, Suggestion, Searchhistory, Tripplan
+from models import SuggestionList, SuggestionResponse, TripplanCreate, TripplanResponse
 
 
 def get_user_address(user_id) -> str:
@@ -63,3 +63,41 @@ def get_suggestion(user_id: int, suggest_id: int) -> SuggestionResponse:
         else:
             print("Suggestion not found for user with id: {}".format(user_id))
             return object.__new__(SuggestionResponse)
+
+
+def get_starting_point(history_id: int) -> str:
+    """
+    returns the starting point as a string.
+    :param history_id: The id of the search_history.:
+    :return starting_point: string of the starting point.:
+    """
+    with SessionLocal() as db:
+        search_history_obj = db.query(Searchhistory).filter(Searchhistory.id == history_id).first()
+        return search_history_obj.starting_point if search_history_obj else ""
+
+
+def save_tripplan(user_id: int, searchhistory_id: int, suggestion_id: int, tripplan: TripplanCreate):
+    """
+    Saves a tripplan to database for user with user_id and search with searchhistory_id as well as the chosen suggestion
+    to plan with, with suggestion_id as well.
+    :param user_id: The user id:
+    :param searchhistory_id: The search history id:
+    :param suggestion_id: The suggestion id:
+    :param tripplan: A TripplanCreate object:
+    :return: None.
+    """
+    with SessionLocal() as db:
+        new_tripplan = Tripplan(
+            title=tripplan.title,
+            description=tripplan.description,
+            highlights=tripplan.highlights,
+            route_description=tripplan.route_description,
+            google_maps_location_links=tripplan.google_maps_location_links,
+            stopps=1,
+            suggestion_id=suggestion_id,
+            search_id=searchhistory_id,
+            user_id=user_id
+        )
+        db.add(new_tripplan)
+        db.commit()
+        return TripplanResponse.model_validate(new_tripplan)
