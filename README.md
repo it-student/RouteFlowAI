@@ -90,9 +90,10 @@ uv pip install -r requirements.txt
 ## Running the Application
 
 To run the FastAPI development server, make sure your virtual environment is active and run:
+# im Projektordner, mit aktivierter virtueller Umgebung:
 
 ```bash
-uv run uvicorn src.main:app --reload
+uv run uvicorn main:app --reload --app-dir src
 ```
 
 Once started, the server will be available at:
