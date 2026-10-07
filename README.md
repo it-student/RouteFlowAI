@@ -97,7 +97,7 @@ uv run uvicorn main:app --reload --app-dir src
 ```
 
 Once started, the server will be available at:
-- **API Endpoint**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **Web UI (User Management, AI Suggestions & Map Planning)**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 - **Interactive OpenAPI (Swagger) Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
@@ -107,9 +107,10 @@ Once started, the server will be available at:
 ```text
 RouteFlowAI/
 ├── src/
-│   ├── main.py                # Application entry point and router setups
+│   ├── main.py                # Application entry point, router setups, and static file hosting
 │   ├── api.py                 # Core API route definitions (Users, pipelines, etc.)
 │   ├── models.py              # Pydantic models for request/response validation
+│   ├── static/                # Web UI (HTML, modern Vanilla CSS, JS with Leaflet Map)
 │   ├── core/
 │   │   ├── config.py          # Application configuration loader
 │   │   └── logging.py         # Custom logging configuration
